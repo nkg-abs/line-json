@@ -1,17 +1,26 @@
+const { range, map } = require('@laufire/utils/collection');
 const { rndString } = require('@laufire/utils/random');
 
-const main = (keysLength) => {
-    const rows = Math.floor(Math.sqrt(keysLength));
+const main = (rec, col) => {
     const start = '{';
     const end = '}';
-    for(let i = 0; i < rows; i++){
+    const cols = [];
+    for(let k = 0; k < col - 1; k++){
+        cols[k] = rndString();
+    }
+    
+    for(let i = 0; i < rec; i++){
         let body = '';
-        for(let j = 0; j < rows - 1; j++){
-            body += `"${rndString()}": "${rndString()}",`;
+        let j = 0;
+        while(j < col - 1){
+            body += `"${cols[j]}": "${rndString()}",`;
+            j++;
         };
-        body += `"${rndString()}": "${rndString()}"`;
+        body += `"${cols[j - 1]}": "${rndString()}"`;
         console.log(start + body + end);
     };
 };
 
-main(process.argv[2] || 4);
+main(process.argv[2] || 10, process.argv[3] || 10);
+
+module.exports = main;
